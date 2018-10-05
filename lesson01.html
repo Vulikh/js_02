@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+<script>
+// Добавить переменнную кофе(зерна)
+// Ввести проверку на пустую кофеварку
+// Реализовать зависимость от кол-ва кофе
+// Реализовать метод стоп
+
+    function CoffeeMachine(power) {
+      let waterAmount = 0
+      let waterHeatCapacity = 4200
+      let maxTemp = 90
+      let beansAmount = 0
+      let isRunning = false
+
+      const getBoilTime = function () {
+        return (waterAmount * waterHeatCapacity * maxTemp) / power
+      }
+
+      const getReadyTime = function() {
+      	return (getBoilTime() * beansAmount) / 30
+      }
+
+      const checkWater = function () {
+        return waterAmount > 0
+      }
+
+      const checkBeans = function() {
+      	return beansAmount > 0
+      }
+
+      this.fill = function (newAmount) {
+        if (newAmount >= 50) {
+          waterAmount = newAmount
+        } else {
+          console.error('Слишком мало воды')
+        }
+      }
+
+      this.addBeans = function(newBeansAmount){
+      	if (newBeansAmount >= 30){
+      		beansAmount = newBeansAmount
+      	} else {
+      		console.error('Слишком мало зерен')
+      	}
+      }
+
+      this.stop = function(){
+
+      	if(isRunning){
+      		isRunning = false
+      		console.log('Стоп')
+      	}
+      }
+
+      this.launch = function () {
+
+        if (!checkWater()) {
+          console.error('Налейте воды!')
+          return
+        }
+
+        if (!checkBeans()){
+        	console.error('Добавьте зерен!')
+        	return
+        }
+
+        const readyTime = getReadyTime()
+
+        console.log('Ваш кофе будет готов через ' + Math.floor(readyTime / 1000) + ' сек')  
+
+        var i = 0
+      
+        isRunning = true
+
+        var on = setInterval(function(){
+        	if(i >= readyTime){
+        		console.log('Ваш кофе готов!')
+        		clearInterval(on)
+        	}else if(!isRunning){
+        		clearInterval(on)
+        	}
+        	i++
+        }, 1)
+
+        on
+
+    const vitek = new CoffeeMachine(2500)
+
+    vitek.fill(50)
+    vitek.addBeans(30)
+    vitek.launch()
+    // setTimeout(vitek.stop(), 100000)
+
+</script>
+</body>
+</html>
